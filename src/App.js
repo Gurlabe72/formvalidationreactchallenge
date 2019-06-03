@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import './App.css';
 
+const emailRegex = RegExp(
+  /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+)
 const formValid = formErrors => {
   let valid = true;
 
-   Object.values(formErrors).forEach(val => {
+  Object.values(formErrors).forEach(val => {
     val.length > 0 && (valid = false);
-   });
-   return valid;
+  });
+  return valid;
 }
 class App extends Component {
   
@@ -34,7 +37,6 @@ class App extends Component {
 
     if(formValid(this.state.fromErrors)) {
       console.log(`
-      
       --SUBMITTING--
       First Name: ${this.state.firstName}
       Last Name: ${this.state.lastName}
@@ -45,6 +47,43 @@ class App extends Component {
       console.error('FORM INVALID - SHOW ERROR MESSAGE')
     }
   };
+  handleChange = e => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    let formErrors = this.state.formErrors;
+ console.log ("Name: ", name );
+ console.log("value: ", value);
+    switch (name) {
+
+      case "firstName":
+        formErrors.firstName = 
+        value.length < 3 && value.length > 0 
+        ? "minimum 3 characters required"
+        : "";
+        break; 
+        case "lastName":
+        formErrors.lastName = 
+        value.length < 3 && value.length > 0 
+        ? "minimum 3 characters required"
+        : "";
+        break; 
+        case "email":
+        formErrors.email = 
+        emailRegex.test(value) && value.length > 0 
+        ? ""
+        : "invalid email address"
+        break;
+        case "password":
+        formErrors.password = 
+        value.length < 6 && value.length > 0 
+        ? "minimum 6 characters required"
+        : "";
+        break; 
+        default:
+        break; 
+
+    }
+    }
 
 
   render() {
@@ -56,7 +95,6 @@ class App extends Component {
           <div className="firstName">
             <label htmlFor="firstName">First Name</label>
             <input 
-                type="text" 
                 className="" 
                 placeholder="First Name Here" 
                 name="firstName" 
@@ -66,7 +104,6 @@ class App extends Component {
           <div className="lastName">
             <label htmlFor="lastName">Last Name</label>
             <input 
-                type="text" 
                 className="" 
                 placeholder="Last Name Here" 
                 name="lastName" 
@@ -76,7 +113,6 @@ class App extends Component {
           <div className="email">
             <label htmlFor="email">Email</label>
             <input 
-                type="text" 
                 className="" 
                 placeholder="Email Here" 
                 name="email" 
@@ -86,7 +122,6 @@ class App extends Component {
           <div className="password">
             <label htmlFor="password">Password</label>
             <input 
-                type="text" 
                 className="" 
                 placeholder="Password Here" 
                 type="password"
